@@ -10,6 +10,10 @@ services:
       - 5000
     ports:
       - "5000:5000"
+    links:  
+      - mongo_db:mongo_db
+    depends_on:
+      - mongo_db
     #restart: always  
     volumes:
       - ./backend/flask_app:/usr/src/app
@@ -29,4 +33,16 @@ services:
     stdin_open: true
     tty: true
     #restart: always
+  
+  mongo_db:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:    # 환경변수를 정의합니다.
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: vitaminc
+    volumes:
+       - ./mongo/db:/data/db
+    ports:
+      - "27017:27017"
+    
   
